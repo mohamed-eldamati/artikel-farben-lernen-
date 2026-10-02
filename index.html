@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>der · die · das — Artikel-Farben</title>
+<style>
+:root{--der:#2f6fed;--das:#2ca865;--die:#e23d57;--pl:#111;--ink:#1d2a44;--bg:#f4f6fb}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink);text-align:center}
+.wrap{max-width:1280px;margin:0 auto;padding:28px 16px 40px}
+h1{font-size:clamp(36px,6vw,58px);margin:10px 0 6px;letter-spacing:-1px}
+.sub{color:#5d6b85;font-size:19px;margin:0 0 26px}
+.legend{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.lg{background:#fff;border-radius:14px;padding:12px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px #1d2a4412;text-align:left}
+.dot{width:26px;height:26px;border-radius:8px}
+.lg b{font-size:20px;display:block}.lg span{color:#5d6b85}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:16px}
+.card{background:#fff;border-radius:18px;padding:18px 8px 14px;border-top:5px solid;box-shadow:0 2px 10px #1d2a4412;cursor:pointer;transition:.18s}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 20px #1d2a4426}
+.card.playing{outline:3px solid #ffb703}
+.em{font-size:54px;line-height:1.1}
+.art{font-weight:800;font-size:20px;margin-top:8px}
+.w{font-size:18px}
+.pl{margin-top:8px;padding-top:8px;border-top:1px dashed #d5dbe8;font-weight:800;font-size:18px;color:var(--pl)}
+.pl small{font-weight:600;color:#6b7690;display:block;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.der{color:var(--der)}.das{color:var(--das)}.die{color:var(--die)}.plural{color:var(--pl)}
+.b-der{border-color:var(--der)}.b-das{border-color:var(--das)}.b-die{border-color:var(--die)}
+.game{background:#fff;border-radius:22px;padding:26px;margin-top:40px;box-shadow:0 2px 10px #1d2a4412;text-align:left}
+.game h2{margin:0 0 16px;font-size:28px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.tab{border:1px solid #d5dbe8;background:#f4f6fb;padding:11px 18px;border-radius:999px;font-size:16px;cursor:pointer;font-family:inherit}
+.tab.on{background:#1d2a44;color:#fff;border-color:#1d2a44;font-weight:700}
+.stats{color:#5d6b85;margin-bottom:14px;font-size:17px}.stats b{color:var(--ink)}
+.stage{background:var(--bg);border-radius:20px;padding:30px 14px;text-align:center;min-height:240px}
+.stage .em{font-size:76px}.stage .big{font-size:32px;font-weight:800;margin:10px 0}
+.btns{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.btn{border:0;border-radius:14px;padding:22px 8px;font-size:26px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;transition:.15s}
+.btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.btn.der{background:var(--der);color:#fff}.btn.das{background:var(--das);color:#fff}.btn.die{background:var(--die);color:#fff}.btn.plural{background:var(--pl);color:#fff}
+.btn.ok{outline:5px solid #ffb703}.btn.no{animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.act{display:inline-block;margin:6px;padding:11px 20px;border-radius:12px;border:1px solid #d5dbe8;background:#fff;font-size:17px;cursor:pointer;font-family:inherit}
+.act.main{background:#1d2a44;color:#fff;border-color:#1d2a44}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:14px}
+.opt{background:#fff;border-radius:14px;padding:14px 6px;cursor:pointer;box-shadow:0 2px 8px #1d2a4414;transition:.15s}
+.opt:hover{transform:translateY(-3px)}.opt .em{font-size:40px}
+.opt.good{background:#d9f5e5}.opt.bad{animation:sh .35s;background:#fde0e5}
+.fb{min-height:30px;font-size:22px;font-weight:800;margin-top:12px}
+.hint{font-size:13px;color:#6b7690;margin-top:4px}
+@media(max-width:620px){.btns{grid-template-columns:1fr 1fr}}
+footer{margin-top:34px;color:#6b7690}
+</style></head><body><div class="wrap">
+<h1>der · die · das</h1>
+<p class="sub">Jede Farbe ist ein Artikel. Schau, hör zu und spiele, bis die Farben von selbst kommen.</p>
+<div class="legend">
+<div class="lg"><i class="dot" style="background:var(--der)"></i><div><b class="der">der</b><span>maskulin</span></div></div>
+<div class="lg"><i class="dot" style="background:var(--das)"></i><div><b class="das">das</b><span>neutrum</span></div></div>
+<div class="lg"><i class="dot" style="background:var(--die)"></i><div><b class="die">die</b><span>feminin</span></div></div>
+<div class="lg"><i class="dot" style="background:var(--pl)"></i><div><b class="plural">die</b><span>Plural</span></div></div>
+</div>
+<div class="grid" id="grid"></div>
+
+<div class="game"><h2>🎮 Spiel: Artikel-Farben</h2>
+<div class="tabs" id="tabs">
+<button class="tab on" data-m="farbe">🎨 Welche Farbe?</button>
+<button class="tab" data-m="hoeren">🔊 Hören &amp; Finden</button>
+<button class="tab" data-m="sort">🧺 Sortier-Spiel</button></div>
+<div class="stats">Punkte: <b id="pt">0</b> &nbsp; Serie: <b id="se">0</b> 🔥 &nbsp; Frage: <b id="fr">0</b>/<b id="tot">10</b></div>
+<div class="stage" id="stage"></div>
+<div id="ctl"></div><div class="fb" id="fb"></div></div>
+<footer>Viel Erfolg beim Lernen! 🇩🇪</footer></div>
+
+<script>
+const W=[
+["🚗","das","Auto","die Autos"],["📖","das","Buch","die Bücher"],["💰","das","Geld","die Gelder"],["🛣️","die","Straße","die Straßen"],
+["🥛","das","Glas","die Gläser"],["🖊️","der","Stift","die Stifte"],["💻","der","Computer","die Computer"],["🧴","das","Medikament","die Medikamente"],
+["🧾","die","Rechnung","die Rechnungen"],["🔑","der","Schlüssel","die Schlüssel"],["💉","die","Spritze","die Spritzen"],["💊","die","Tablette","die Tabletten"],
+["👩‍🎓","die","Studentin","die Studentinnen"],["🏛️","die","Universität","die Universitäten"],["🍽️","das","Restaurant","die Restaurants"],
+["🤵","der","Kellner","die Kellner"],["🧑‍⚕️","der","Arzt","die Ärzte"],["🤒","die","Patientin","die Patientinnen"],["🏥","das","Krankenhaus","die Krankenhäuser"],
+["🚕","das","Taxi","die Taxis"],["🚖","der","Taxifahrer","die Taxifahrer"]
+].map(([e,a,w,p])=>({e,a,w,p,pw:p.replace(/^die /,"")}));
+
+// ---------- Audio ----------
+let voice=null;
+function pick(){const v=speechSynthesis.getVoices();voice=v.find(x=>/de[-_]DE/i.test(x.lang)&&/google|microsoft|natural|online/i.test(x.name))||v.find(x=>/^de/i.test(x.lang))||null}
+if("speechSynthesis"in window){pick();speechSynthesis.onvoiceschanged=pick}
+function say(t,cb){
+ if(!("speechSynthesis"in window)){cb&&cb();return}
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(t);u.lang="de-DE";if(voice)u.voice=voice;u.rate=.85;
+ u.onend=()=>cb&&cb();speechSynthesis.speak(u)}
+const sayW=w=>say(w.a+" "+w.w);
+const sayP=w=>say(w.p);
+
+// ---------- Karten ----------
+const grid=document.getElementById("grid");
+W.forEach((w,i)=>{
+ const d=document.createElement("div");d.className="card b-"+w.a;d.id="c"+i;
+ d.innerHTML=`<div class="em">${w.e}</div><div class="art ${w.a}">${w.a}</div><div class="w">${w.w}</div>
+ <div class="pl"><small>Plural</small>${w.p}</div>`;
+ d.onclick=()=>{document.querySelectorAll(".card.playing").forEach(c=>c.classList.remove("playing"));d.classList.add("playing");
+  say(w.a+" "+w.w,()=>setTimeout(()=>say(w.p,()=>d.classList.remove("playing")),250))};
+ grid.appendChild(d)});
+
+// ---------- Spiel ----------
+const $=id=>document.getElementById(id);
+let mode="farbe",pts=0,streak=0,n=0,TOT=10,q=null,locked=false,pool=[];
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");mode=t.dataset.m;start()});
+function upd(){$("pt").textContent=pts;$("se").textContent=streak;$("fr").textContent=Math.min(n,TOT);$("tot").textContent=TOT}
+function start(){pts=0;streak=0;n=0;locked=false;$("fb").textContent="";pool=shuffle(W);TOT=mode==="sort"?W.length:10;upd();next()}
+function end(){$("stage").innerHTML=`<div class="em">🏆</div><div class="big">${pts} Punkte</div>`;
+ $("ctl").innerHTML=`<button class="act main" onclick="start()">Nochmal spielen</button>`;$("fb").textContent="";say("Super! Du hast "+pts+" Punkte.")}
+function good(){pts+=10+streak*2;streak++;$("fb").innerHTML='<span style="color:var(--das)">Richtig! ✓</span>'}
+function bad(txt){streak=0;$("fb").innerHTML='<span style="color:var(--die)">Falsch. '+txt+'</span>'}
+function next(){
+ if(n>=TOT){return end()}
+ locked=false;$("fb").textContent="";const w=pool[n%pool.length];n++;upd();
+ if(mode==="farbe")farbe(w);else if(mode==="hoeren")hoeren(w);else sort(w)}
+function bins(w,isPl){
+ const keys=["der","das","die","plural"];
+ $("ctl").innerHTML="";const box=document.createElement("div");box.className="btns";
+ keys.forEach(k=>{const b=document.createElement("button");b.className="btn "+k;b.textContent=k==="plural"?"Plural":k;
+  b.onclick=()=>{if(locked)return;locked=true;const right=isPl?"plural":w.a;
+   if(k===right){b.classList.add("ok");good();say(isPl?w.p:w.a+" "+w.w,()=>setTimeout(next,500));if(mode==="sort"){}}
+   else{b.classList.add("no");bad((isPl?"Das ist der Plural: ":"")+(isPl?w.p:w.a+" "+w.w));
+    box.querySelectorAll(".btn").forEach(x=>{if(x.textContent===(right==="plural"?"Plural":right))x.classList.add("ok")});
+    say(isPl?w.p:w.a+" "+w.w,()=>setTimeout(next,700))}
+   upd()};
+  box.appendChild(b)});
+ $("ctl").appendChild(box)}
+function farbe(w){
+ const isPl=Math.random()<.3;
+ $("stage").innerHTML=`<div class="em">${w.e}</div><div class="big">${isPl?w.pw:w.w}</div>
+ <button class="act" id="rep">🔁 Nochmal hören</button>`;
+ $("rep").onclick=()=>say(isPl?w.pw:w.w);say(isPl?w.pw:w.w);bins(w,isPl)}
+function hoeren(w){
+ const isPl=Math.random()<.4;const others=shuffle(W.filter(x=>x!==w)).slice(0,5);const o=shuffle([w,...others]);
+ $("stage").innerHTML=`<div class="em">🔊</div><div class="big">Hör zu und finde das Bild.</div>
+ <button class="act main" id="rep">🔁 Nochmal hören</button><div class="opts" id="opts"></div>`;
+ const t=isPl?w.p:w.a+" "+w.w;$("rep").onclick=()=>say(t);setTimeout(()=>say(t),300);$("ctl").innerHTML="";
+ o.forEach(x=>{const d=document.createElement("div");d.className="opt";d.innerHTML=`<div class="em">${x.e}</div><div class="w ${isPl?"plural":x.a}">${isPl?x.pw:x.w}</div>`;
+  d.onclick=()=>{if(locked)return;locked=true;
+   if(x===w){d.classList.add("good");good()}else{d.classList.add("bad");bad(t)}
+   upd();say(t,()=>setTimeout(next,600))};
+  $("opts").appendChild(d)})}
+function sort(w){
+ const isPl=n%3===0;
+ $("stage").innerHTML=`<div class="em">${w.e}</div><div class="big">${isPl?w.pw:w.w}</div>
+ <button class="act" id="rep">🔁 Nochmal hören</button>`;
+ $("rep").onclick=()=>say(isPl?w.pw:w.w);say(isPl?w.pw:w.w);bins(w,isPl)}
+start();
+</script></body></html>
